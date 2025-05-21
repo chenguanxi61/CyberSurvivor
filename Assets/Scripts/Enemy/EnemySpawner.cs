@@ -10,7 +10,7 @@ public class EnemySpawner : MonoBehaviour
     public int maxEnemies = 20;          // 最大敌人数量
     public float spawnRadius = 10f;      // 敌人生成离玩家多远
     public float cameraBuffer = 2f;      // 多出视野范围多少再生成
-
+    public List<GameObject> enemyPrefabs; // 敌人预制体列表
     private List<GameObject> enemies = new List<GameObject>();
 
     private void Start()
@@ -24,10 +24,12 @@ public class EnemySpawner : MonoBehaviour
         {
             enemies.RemoveAll(e => e == null);
 
-            if (enemies.Count < maxEnemies)
+            if (enemies.Count < maxEnemies && enemyPrefabs.Count > 0)
             {
                 Vector2 spawnPos = GetOffCameraSpawnPosition();
-                GameObject enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+                // 随机选择一个预制体
+                GameObject randomPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
+                GameObject enemy = Instantiate(randomPrefab, spawnPos, Quaternion.identity);
                 enemies.Add(enemy);
             }
 

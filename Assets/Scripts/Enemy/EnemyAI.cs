@@ -21,16 +21,20 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        enemyAnimator.Move(true);
+        
     }
 
     private void FixedUpdate()
     {
-        if (target == null) return;
+        if (target == null)
+        {
+            enemyAnimator.Move(false);
+            return;
+        }
 
         Vector2 direction = (target.position - transform.position).normalized;
         rb.MovePosition(rb.position + direction * moveSpeed * Time.fixedDeltaTime);
-
+        enemyAnimator.Move(true);
         // 翻转敌人朝向
         if (direction.x > 0)
             transform.localScale = new Vector3(1, 1, 1);   // 面向右

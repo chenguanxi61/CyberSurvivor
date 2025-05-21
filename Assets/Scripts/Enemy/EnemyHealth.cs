@@ -6,9 +6,11 @@ public class EnemyHealth : MonoBehaviour
 {
     public int maxHealth = 3;
     private int currentHealth;
+    private EnemyAnimator animator;
     void Start()
     {
         currentHealth= maxHealth;
+        animator = GetComponent<EnemyAnimator>();
     }
 
     // Update is called once per frame
@@ -22,8 +24,9 @@ public class EnemyHealth : MonoBehaviour
         currentHealth -= dmg;
         if (currentHealth <= 0)
         {
+            animator.Die();
             GetComponent<EnemyDrop>()?.DropExp();
-            Destroy(gameObject);//TODO:播放死亡动画 生成经验球
+            StartCoroutine(destroyAfterAnimation()); // 使用协程延迟销毁
         }
     }
     
@@ -32,7 +35,15 @@ public class EnemyHealth : MonoBehaviour
         if (other.CompareTag("Bullet"))
         {
           int damage = other.GetComponent<Bullet>().damage;
+          animator.Hit();
           TakeDamage(damage);
         }
+    }
+    
+    private IEnumerator destroyAfterAnimation()
+    {
+        // 假设死亡动画长度为 1 秒，根据实际情况调整
+        yield return new WaitForSeconds(0.5f);
+        Destroy(gameObject);
     }
 }

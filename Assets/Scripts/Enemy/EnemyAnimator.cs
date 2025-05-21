@@ -15,6 +15,16 @@ public class EnemyAnimator : MonoBehaviour
     public void Move(bool walk)
     {
         // Set the "isMoving" parameter in the animator to control the walking animation
-        animator.SetBool("Run", walk);
+        animator.SetBool("isMoving", walk);
+    }
+
+    public void Die()
+    {
+        animator.SetTrigger("Die");
+    }
+    
+    public void Hit()
+    {
+        animator.SetTrigger("Hit");
     }
 }

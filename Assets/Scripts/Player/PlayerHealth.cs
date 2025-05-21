@@ -6,10 +6,13 @@ public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 5;
     private int currentHealth;
+
+    private Animator anim;
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = maxHealth;
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -17,9 +20,11 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth -= dmg;
         Debug.Log("玩家受伤。当前血量：" + currentHealth);
+        anim.SetTrigger("Hit"); // 播放受伤动画
         if (currentHealth <= 0)
         {
             Debug.Log("玩家死亡。");
+            anim.SetTrigger("Die"); // 播放死亡动画
             Destroy(gameObject); //TODO:播放死亡动画
         }
     }
